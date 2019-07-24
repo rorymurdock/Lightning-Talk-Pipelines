@@ -34,22 +34,36 @@ class Transport():
     # Allow specifying an expected code for custom use
     def check_http_response(self, status_code, expected_code=None):
         """Checks if response is a expected or a known good response"""
-        status_codes = {}
-        status_codes[200] = True, 'HTTP 200: OK'
-        status_codes[201] = True, 'HTTP 201: Created'
-        status_codes[204] = True, 'HTTP 204: Empty Response'
-        status_codes[400] = False, 'HTTP 400: Bad Request'
-        status_codes[401] = False, 'HTTP 401: Check WSO Credentials'
-        status_codes[403] = False, 'HTTP 403: Permission denied'
-        status_codes[404] = False, 'HTTP 404: Not found'
-        status_codes[422] = False, 'HTTP 422: Invalid searchby Parameter'
-
         if status_code == expected_code:
             return True
-        if status_code in status_codes:
+        elif status_code == 200:
             if self.debug:
-                print(status_codes[status_code][1])
-            return status_codes[status_code][0]
-
-        print('Unknown code %s' % status_code)
-        return False
+                print('HTTP 200\nOK')
+            return True
+        elif status_code == 201:
+            if self.debug:
+                print('HTTP 201\nCreated')
+            return True
+        elif status_code == 204:
+            if self.debug:
+                print('HTTP 204\nEmpty response')
+            return True
+        elif status_code == 400:
+            if self.debug:
+                print('HTTP 400\nBad request')
+            return False
+        elif status_code == 401:
+            print('HTTP 401\nCheck Authorisation')
+            return False
+        elif status_code == 403:
+            print('HTTP 403\nPermission denied, check AW permissions')
+            return False
+        elif status_code == 404:
+            print('HTTP 404\nNot found')
+            return False
+        elif status_code == 422:
+            print('HTTP 422\nInvalid SearchBy Parameter')
+            return False
+        else:
+            print('Unknown code %s' % status_code)
+            return False
